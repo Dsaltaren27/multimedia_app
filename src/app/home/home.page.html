@@ -1,22 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-title>Registro Multimedia</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <form>
-    <ion-item>
-      <ion-label position="stacked">Descripción</ion-label>
-      <ion-input ></ion-input>
-    </ion-item>
+<ion-content class="ion-padding">
 
-    <ion-button expand="block" >Seleccionar Imagen</ion-button>
+  <form [formGroup]="form"  class="form-layout">
 
-    <div >
-      <ion-img [src]=""></ion-img>
+
+    <ion-button expand="block" (click)="pickImage()">Seleccionar Imagen</ion-button>
+
+
+    <!-- <div *ngIf="imagePreview" class="image-preview">
+      <ion-img [src]="imagePreview"></ion-img>
+    </div> -->
+    <div *ngIf="filePreviewUrl" class="image-preview">
+      <img [src]="filePreviewUrl" alt="Imagen seleccionada" />
     </div>
-    
-    <ion-button expand="block" >Guardar</ion-button>
+
+
+    <ion-item lines="full" class="centered-item">
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input formControlName="description" required></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
+      Descripción es obligatoria.
+    </ion-text>
+
+
+    <ion-button expand="block" type="submit" [disabled]="form.invalid">
+      Guardar
+    </ion-button>
+
   </form>
+
 </ion-content>
