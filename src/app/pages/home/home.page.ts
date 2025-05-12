@@ -37,26 +37,26 @@ export class HomePage {
 
   async pickImage() {
     const result = await this.mediaService.pickFiles();
-    if (result && result.files.length > 0) {
-      const fileInfo = result.files[0];
-      if (fileInfo.path) {
-        try {
-          const response = await fetch(fileInfo.path!);
-          const blob = await response.blob();
-          this.imageFile = new File([blob], fileInfo.name, { type: fileInfo.mimeType });
-          this.fileName = fileInfo.name;
-          this.mimeType = fileInfo.mimeType;
-          this.filePreviewUrl = URL.createObjectURL(this.imageFile);
-          console.log("filePreviewUrl " + this.filePreviewUrl);
-          console.log("Result path" + fileInfo.path);
-        } catch (error) {
-          this.presentAlert('Error', `Error al leer el archivo: ${error}`);
-        }
-      } else {
-        this.presentAlert('Advertencia', 'No se pudo obtener la ruta del archivo.');
+   if (result && result.files.length > 0) {
+      console.log("Result " + JSON.stringify(result))
+
+      const file = result.files[0];
+      file
+      const response = await fetch(file.path!); // asegúrate que `path` no es null
+      const blob = await response.blob();
+      const imageFile = new File([blob], file.name, { type: file.mimeType });
+
+      this.fileName = file.name;
+      this.mimeType = file.mimeType;
+      try {
+        this.filePreviewUrl = URL.createObjectURL(imageFile);
+        console.log("filePreviewUrl " + this.filePreviewUrl)
+        console.log("Result path" + file.path)
+      } catch (error) {
+        alert("Error " + error)
       }
-    }
   }
+}
 
   async captureNewImage() {
     try {
