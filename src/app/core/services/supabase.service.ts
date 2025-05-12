@@ -15,7 +15,7 @@ export class SupabaseService {
 
   async uploadImage(file: File, path: string): Promise<string> {
     const { data, error } = await this.supabase.storage
-      .from(',ultimedia')
+      .from('multimedia')
       .upload(path, file, {
         cacheControl: '3600',
         upsert: false,

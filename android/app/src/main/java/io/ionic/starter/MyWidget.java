@@ -1,4 +1,12 @@
 package io.ionic.starter;
 
-public class MyWidget {
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+public class MyWidget extends BroadcastReceiver {
+  @Override
+  public void onReceive(Context context, Intent intent) {
+
+  }
 }

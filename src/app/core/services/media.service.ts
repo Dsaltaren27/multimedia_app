@@ -9,7 +9,7 @@ import { FilePicker, PickFilesResult } from '@capawesome/capacitor-file-picker';
 @Injectable({
   providedIn: 'root'
 })
-export class CameraService {
+export class MediaService {
   // Método para capturar imagen
   constructor() {}
 
