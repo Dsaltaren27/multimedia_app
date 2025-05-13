@@ -32,6 +32,8 @@ public class MyWidget extends AppWidgetProvider {
 
         views.setTextViewText(R.id.widget_text, description);
 
+        android.util.Log.d("MyWidget", "Image URL from prefs: " + imageUrl);
+
         if (!imageUrl.isEmpty()) {
           Glide.with(context.getApplicationContext())
             .asBitmap()

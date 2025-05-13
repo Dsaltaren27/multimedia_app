@@ -5,6 +5,7 @@ import { MediaService } from '../../core/services/media.service';
 import { PreferencesService } from '../../core/services/preferences.service';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { FirebaseService } from 'src/app/core/services/firebase.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-home',
@@ -36,30 +37,40 @@ export class HomePage {
   }
 
 async pickImage() {
-  const result = await this.mediaService.pickFiles();
-  if (result && result.files.length > 0) {
-    console.log("Result " + JSON.stringify(result));
-
-    const file = result.files[0];
     try {
-      // Usamos directamente el blob que ya está en el objeto file
-      const blob = file.blob;
-      if (!blob) {
-        throw new Error('Blob is undefined');
-      }
-      const imageFile = new File([blob], file.name, { type: file.mimeType });
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Photos,
+      });
 
-      this.fileName = file.name;
-      this.mimeType = file.mimeType;
-      this.filePreviewUrl = URL.createObjectURL(imageFile);
-      console.log("filePreviewUrl " + this.filePreviewUrl);
-      // ¡Añadimos esta línea para asignar el File a la variable del componente!
-      this.imageFile = imageFile;
+      console.log('Imagen seleccionada:', image);
+
+      if (image?.webPath) {
+        this.filePreviewUrl = image.webPath;
+        try {
+          const response = await fetch(image.webPath);
+          const blob = await response.blob();
+          const imageName = image.path ? image.path.substring(image.path.lastIndexOf('/') + 1) : `image_${Date.now()}.png`;
+          const mimeType = image.format === 'jpeg' ? 'image/jpeg' : (image.format === 'png' ? 'image/png' : 'image/jpeg'); // Ajusta según los formatos posibles
+          this.imageFile = new File([blob], imageName, { type: mimeType });
+          this.fileName = imageName;
+          this.mimeType = mimeType;
+          this.filePreviewUrl = URL.createObjectURL(this.imageFile);
+          console.log('File de la imagen seleccionada:', this.imageFile);
+        } catch (error) {
+          console.error('Error al convertir la URI de la galería a File:', error);
+          this.presentAlert('Error', 'Error al procesar la imagen seleccionada.');
+          return;
+        }
+      }
     } catch (error) {
-      alert("Error al procesar la imagen: " + error);
+      console.error('Error al seleccionar la imagen:', error);
+      this.presentAlert('Error', 'Hubo un problema al seleccionar la imagen.');
     }
   }
-}
+  
   async captureNewImage() {
     try {
       const imageUrl = await this.mediaService.captureImage();
@@ -107,8 +118,8 @@ async pickImage() {
 
       await this.firebaseService.addMedia(description, imageUrl);
 
-      await this.preferencesService.set('imageUrl', imageUrl);
-      await this.preferencesService.set('description', description);
+    await this.preferencesService.set('imageUrl', imageUrl);
+    await this.preferencesService.set('description', description);
 
       this.presentAlert('Éxito', 'Imagen subida y datos guardados correctamente.');
       this.resetForm();
@@ -147,3 +158,4 @@ async pickImage() {
     this.imageFile = null;
   }
 }
+      // Si necesitas un Blob para subirlo, puedes intentar obtenerlo así:

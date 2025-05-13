@@ -1,12 +1,117 @@
-ion-content {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-
+ion-header {
+  ion-toolbar {
+    --background: #1e88e5; /* Azul más intenso */
+    --color: #ffffff;
+    --ion-toolbar-border-color: #1565c0; /* Azul aún más oscuro para el borde */
+  }
 }
 
-form {
-  margin: 0 auto;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+ion-content {
+  --background: #f0f0f0; /* Gris más cálido y ligeramente más oscuro */
+
+  .ion-padding {
+    padding: 20px;
+  }
+
+  .form-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* Un poco más de espacio */
+  }
+
+  ion-button {
+    --background: #ffffff;
+    --color: #1e88e5; /* Azul intenso para el texto del botón */
+    --border-color: #1e88e5;
+    --border-width: 1.5px; /* Borde un poco más grueso */
+    --border-style: solid;
+    --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+    border-radius: 8px; /* Bordes más redondeados */
+    font-weight: 500; /* Texto un poco más grueso */
+    padding: 12px 20px; /* Más padding interior */
+
+    ion-icon {
+      color: #1e88e5;
+      font-size: 1.1em;
+    }
+
+    ion-spinner {
+      color: #1e88e5;
+    }
+
+    &.capture-button {
+      --background: #bbdefb; /* Azul claro pero más saturado */
+      --color: #1976d2; /* Azul ligeramente más oscuro para el texto */
+    }
+  }
+
+  .image-preview {
+    position: relative;
+    margin-top: 25px;
+    border: 1px solid #b0bec5; /* Gris más presente */
+    border-radius: 12px; /* Bordes más redondeados */
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px; /* Redondea también la imagen */
+    }
+
+    .remove-image-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      --background: rgba(255, 255, 255, 0.8); /* Fondo blanco más opaco */
+      --color: #d32f2f; /* Rojo más intenso */
+      --padding-start: 7px;
+      --padding-end: 7px;
+      font-size: 1.3em;
+      border-radius: 50%; /* Botón circular */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra al botón */
+    }
+  }
+
+  .centered-item {
+    --padding-start: 15px;
+    --padding-end: 15px;
+    border-radius: 8px;
+    background-color: #ffffff; /* Fondo blanco para el input */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px; /* Un poco de margen inferior */
+
+    ion-label {
+      color: #444;
+      font-weight: 500;
+    }
+
+    ion-input {
+      --color: #222;
+    }
+  }
+
+  ion-text.danger {
+    font-size: 0.95em;
+    margin-top: 8px;
+    display: block;
+    color: #c62828; /* Rojo más oscuro */
+  }
+
+  /* Estilos para el botón de "Ver galeria" */
+  ion-button[routerLink="/list"] {
+    --background: #4caf50; /* Verde para la galería */
+    --color: #ffffff;
+    --border-color: #43a047;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 12px 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+
+    ion-icon {
+      color: #ffffff;
+      font-size: 1.1em;
+    }
+  }
 }

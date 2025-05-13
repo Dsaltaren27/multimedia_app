@@ -1,4 +1,4 @@
-<ion-header >
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
@@ -9,17 +9,21 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
+    <div class="grid-container">
     <ion-item *ngFor="let media of mutimedia">
+      <div class="ion-content">
       <ion-thumbnail slot="start">
         <ion-img [src]="media.imageUrl" [alt]="media.description"></ion-img>
       </ion-thumbnail>
       <ion-label>
         <h2>Descripción: {{ media.description }}</h2>
-       <ion-note slot="end">
-        Creado el: {{ media.createdAt | date:'medium' }}
+        <ion-note slot="end">
+          Creado el: {{ media.createdAt | date:'medium' }}
         </ion-note>
       </ion-label>
+      </div>
     </ion-item>
+    </div>
   </ion-list>
 
   <ion-item *ngIf="mutimedia.length === 0">
