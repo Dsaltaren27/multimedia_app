@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, CollectionReference, Timestamp } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Media } from '../core/interfaces/media';
 
 
 @Injectable({
   providedIn: 'root',
 })
-export class FirestoreService {
+export class FirebaseService {
   private collectionPath = 'media';
   private mediaCollection: CollectionReference;
 
@@ -27,4 +27,16 @@ export class FirestoreService {
   getMediaRecords(): Observable<Media[]> {
     return collectionData(this.mediaCollection, { idField: 'id' }) as Observable<Media[]>;
   }
+
+    getMediaList(): Observable<Media[]> {
+    return collectionData(this.mediaCollection, { idField: 'id' }).pipe(
+      map((mediaArray: any[]) => mediaArray.map(media => ({
+        ...media as Media,
+        createdAt: (media.createdAt as Timestamp).toDate()
+      })))
+    );
+  }
+
+
+
 }

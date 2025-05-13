@@ -14,6 +14,10 @@ export class MediaService {
   constructor() {}
 
   async captureImage(): Promise<string> {
+        // if (!Capacitor.isNativePlatform()) {
+    //   console.warn('El selector de archivos solo funciona en plataformas nativas.');
+    //   return null;
+    // }
     const image = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera

@@ -4,7 +4,7 @@ import { SupabaseService } from 'src/app/core/services/supabase.service';
 import { MediaService } from '../../core/services/media.service';
 import { PreferencesService } from '../../core/services/preferences.service';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { FirestoreService } from '../../core/services/firebase.service';
+import { FirebaseService } from 'src/app/core/services/firebase.service';
 
 @Component({
   selector: 'app-home',
@@ -25,10 +25,10 @@ export class HomePage {
     private fb: FormBuilder,
     private mediaService: MediaService,
     private supabaseService: SupabaseService,
-    private firestoreService: FirestoreService,
     private preferencesService: PreferencesService,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private firebaseService: FirebaseService
   ) {
     this.form = this.fb.group({
       description: ['', Validators.required]
@@ -105,7 +105,7 @@ async pickImage() {
 
       const imageUrl = await this.supabaseService.uploadImage(this.imageFile, filePath);
 
-      await this.firestoreService.addMedia(description, imageUrl);
+      await this.firebaseService.addMedia(description, imageUrl);
 
       await this.preferencesService.set('imageUrl', imageUrl);
       await this.preferencesService.set('description', description);
