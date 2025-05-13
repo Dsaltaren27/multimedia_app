@@ -23,10 +23,10 @@ export class MediaService {
 
 
   async pickFiles(): Promise<PickFilesResult | null> {
-    if (!Capacitor.isNativePlatform()) {
-      console.warn('El selector de archivos solo funciona en plataformas nativas.');
-      return null;
-    }
+    // if (!Capacitor.isNativePlatform()) {
+    //   console.warn('El selector de archivos solo funciona en plataformas nativas.');
+    //   return null;
+    // }
 
     try {
       const result = await FilePicker.pickFiles({

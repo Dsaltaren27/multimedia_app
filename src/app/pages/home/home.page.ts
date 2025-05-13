@@ -35,29 +35,31 @@ export class HomePage {
     });
   }
 
-  async pickImage() {
-    const result = await this.mediaService.pickFiles();
-   if (result && result.files.length > 0) {
-      console.log("Result " + JSON.stringify(result))
+async pickImage() {
+  const result = await this.mediaService.pickFiles();
+  if (result && result.files.length > 0) {
+    console.log("Result " + JSON.stringify(result));
 
-      const file = result.files[0];
-      file
-      const response = await fetch(file.path!); // asegúrate que `path` no es null
-      const blob = await response.blob();
+    const file = result.files[0];
+    try {
+      // Usamos directamente el blob que ya está en el objeto file
+      const blob = file.blob;
+      if (!blob) {
+        throw new Error('Blob is undefined');
+      }
       const imageFile = new File([blob], file.name, { type: file.mimeType });
 
       this.fileName = file.name;
       this.mimeType = file.mimeType;
-      try {
-        this.filePreviewUrl = URL.createObjectURL(imageFile);
-        console.log("filePreviewUrl " + this.filePreviewUrl)
-        console.log("Result path" + file.path)
-      } catch (error) {
-        alert("Error " + error)
-      }
+      this.filePreviewUrl = URL.createObjectURL(imageFile);
+      console.log("filePreviewUrl " + this.filePreviewUrl);
+      // ¡Añadimos esta línea para asignar el File a la variable del componente!
+      this.imageFile = imageFile;
+    } catch (error) {
+      alert("Error al procesar la imagen: " + error);
+    }
   }
 }
-
   async captureNewImage() {
     try {
       const imageUrl = await this.mediaService.captureImage();
@@ -105,8 +107,8 @@ export class HomePage {
 
       await this.firestoreService.addMedia(description, imageUrl);
 
-      await this.preferencesService.set('widgetImageUrl', imageUrl);
-      await this.preferencesService.set('widgetDescription', description);
+      await this.preferencesService.set('imageUrl', imageUrl);
+      await this.preferencesService.set('description', description);
 
       this.presentAlert('Éxito', 'Imagen subida y datos guardados correctamente.');
       this.resetForm();

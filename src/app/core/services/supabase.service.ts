@@ -22,15 +22,15 @@ export class SupabaseService {
       });
 
     if (error) {
-      console.error('❌ Error subiendo imagen a Supabase:', error.message);
+      console.error(' Error subiendo imagen a Supabase:', error.message);
       throw error;
     }
 
-    console.log('✅ Imagen subida. Ruta:', data.path);
+    console.log('imagen subida. Ruta:', data.path);
 
     
     const publicUrl = this.getImageUrl(data.path);
-    console.log('🌐 URL pública:', publicUrl);
+    console.log(' URL pública:', publicUrl);
 
     return publicUrl;
   }
